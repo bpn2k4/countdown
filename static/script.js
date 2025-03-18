@@ -6,9 +6,11 @@ const minutes = document.querySelector('.minutes')
 const seconds = document.querySelector('.seconds')
 
 const getRemainSeconds = () => {
+  const defaultSeconds = 3601
   const targetDate = window.targetDate
+  console.log("Target date:", targetDate)
   if (!targetDate) {
-    return 3601
+    return defaultSeconds
   }
   try {
     const timezone = -(new Date().getTimezoneOffset() / 60)
@@ -20,7 +22,7 @@ const getRemainSeconds = () => {
     }
     return Math.floor((targetTime - now) / 1000) + 1
   } catch (e) {
-    return 3601
+    return defaultSeconds
   }
 }
 
@@ -38,17 +40,17 @@ function countDown() {
   times[3].front = second
   times[3].back = (second === 0 ? 59 : second - 1)
 
-  const m1 = Math.floor(remainSeconds / 60 % 60)
-  times[2].front = m1
-  times[2].back = (m1 === 0 ? 59 : m1 - 1)
+  const minute = Math.floor(remainSeconds / 60 % 60)
+  times[2].front = minute
+  times[2].back = (minute === 0 ? 59 : minute - 1)
 
-  const h1 = Math.floor(remainSeconds / 3600 % 24)
-  times[1].front = h1
-  times[1].back = (h1 === 0 ? 23 : h1 - 1)
+  const hour = Math.floor(remainSeconds / 3600 % 24)
+  times[1].front = hour
+  times[1].back = (hour === 0 ? 23 : hour - 1)
 
-  const d1 = Math.floor(remainSeconds / 86400 / 24)
-  times[0].front = d1
-  times[0].back = (d1 === 0 ? 0 : d1 - 1)
+  const day = Math.floor(remainSeconds / 86400)
+  times[0].front = day
+  times[0].back = (day === 0 ? 0 : day - 1)
 
   let i = 0
   containers.forEach(container => {
